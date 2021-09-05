@@ -36,7 +36,7 @@ create table especie(
 
 create table plantacao (
 	cod_plantacao int,
-	area numeric(4, 2),
+	area numeric(9, 2),
 	rua varchar(25),
 	numero int,
 	bairro varchar(25) not null,
@@ -64,7 +64,6 @@ create table produto (
 	cod_movimentacao int,
 	primary key(cod_produto),
 	foreign key(cod_movimentacao) references movimentacao,
-	unique(cod_movimentacao),
 	check(tipo >= 0),
 	check(tipo <=2)
 );
@@ -113,9 +112,9 @@ insert into produto values (1, 'Pacote de sementes', 2, 1)
 insert into movimentacao values (2, 2, 1, 32.30, '2021-09-03', '1')
 insert into produto values (2, 'Saco de quirera', 2, 2)
 insert into produto values (3, 'Angola Branca', 0, null)
-insert into animal values (3, 'ABC123', 1)
 insert into especie values (1, 'Aves')
 insert into especie values (2, 'Bovino')
+insert into animal values (3, 'ABC123', 1)
 insert into produto values (4, 'Safra de café', 1, null)
 insert into safra values (4, '2021-01-01', 'café', 0.2)
 insert into gera_safra values (4, 2)
@@ -125,3 +124,12 @@ select descricao, cultura, toneladas, bairro from safra, gera_safra, plantacao, 
 	where cod_produto(gera_safra)=cod_produto(safra) 
 		and cod_plantacao(gera_safra)=cod_plantacao(plantacao)
 		and cod_produto(safra)=cod_produto(produto)
+-- dois produtos comprados em 1 movimentacao
+select * from movimentacao
+select descricao, valor, data_movimentacao, tipo(movimentacao), cod_movimentacao(movimentacao)
+	from produto, movimentacao
+	where cod_movimentacao(movimentacao)=cod_movimentacao(produto)
+	and tipo(movimentacao)='1'
+insert into movimentacao values (3, 2, 1, 32405.30, '2021-09-01', '1')
+insert into produto values (5, 'Trator', 2, 3)
+insert into produto values (6, 'Carreta', 2, 3)
