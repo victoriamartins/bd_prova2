@@ -70,7 +70,7 @@ create table produto (
 
 create table animal(
 	cod_produto int,
-	chip varchar(10) not null,
+	chip varchar(10),
 	cod_especie int,
 	primary key(cod_produto),
 	foreign key(cod_produto) references produto,
